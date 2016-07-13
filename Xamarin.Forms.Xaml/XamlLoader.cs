@@ -70,7 +70,7 @@ namespace Xamarin.Forms.Xaml
 			}
 		}
 
-		public static object Create (string xaml, bool doNotThrow = false)
+		public static object Create(string xaml, bool doNotThrow = false, Assembly currentAssembly = null)
 		{
 			object inflatedView = null;
 			using (var reader = XmlReader.Create (new StringReader (xaml))) {
@@ -87,6 +87,7 @@ namespace Xamarin.Forms.Xaml
 					XamlParser.ParseXaml (rootnode, reader);
 					var visitorContext = new HydratationContext {
 						DoNotThrowOnExceptions = doNotThrow,
+						CurrentAssembly = currentAssembly
 					};
 					var cvv = new CreateValuesVisitor (visitorContext);
 					cvv.Visit ((ElementNode)rootnode, null);
