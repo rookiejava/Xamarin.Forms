@@ -385,17 +385,6 @@ namespace Xamarin.Forms.Xaml
 			if (propertyInfo != null && propertyInfo.CanWrite && (setter = propertyInfo.SetMethod) != null)
 			{
 				object convertedValue = value.ConvertTo(propertyInfo.PropertyType, () => propertyInfo, serviceProvider);
-				if (convertedValue != null && !propertyInfo.PropertyType.IsInstanceOfType(convertedValue) && typeof(View).IsAssignableFrom( propertyInfo.PropertyType)) {
-					//See if this is a NativeView, and we can convert it
-					if (Device.OS == TargetPlatform.iOS) {
-						Type toType = Assembly.Load(new AssemblyName("Xamarin.iOS")).ExportedTypes.First(t => t.FullName == "UIKit.UIView");
-						if (toType.IsInstanceOfType(convertedValue)) {
-							var toView = Assembly.Load(new AssemblyName("Xamarin.Forms.Platform.iOS")).ExportedTypes.First(t => t.FullName == "Xamarin.Forms.Platform.iOS.LayoutExtensions").GetRuntimeMethods().First(md => md.Name == "ToView");
-							convertedValue = toView.Invoke(null, new [] { convertedValue, null, null, null });
-						}
-					}
-				}
-
 				if (convertedValue == null || propertyInfo.PropertyType.IsInstanceOfType(convertedValue)) {
 					try {
 						setter.Invoke(xamlelement, new [] { convertedValue });
