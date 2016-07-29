@@ -168,9 +168,46 @@ namespace Xamarin.Forms.Controls
 			detail.Content = detailContent;
 
 			page.Master = master;
+			
+			AddToolBarItems(page);
+
 			page.Detail = detail;
 
 			return page;
+		}
+
+		void AddToolBarItems(MasterDetailPage page)
+		{
+			Action action = () => DisplayAlert("Hey!", "Command Bar Item Clicked", "OK");
+
+			var tb1 = new ToolbarItem("Primary 1", "coffee.png", action, ToolbarItemOrder.Primary)
+			{
+				IsEnabled = true,
+				AutomationId = "toolbaritem_primary1"
+			};
+
+			var tb2 = new ToolbarItem("Primary 2", "coffee.png", action, ToolbarItemOrder.Primary)
+			{
+				IsEnabled = true,
+				AutomationId = "toolbaritem_primary2"
+			};
+
+			var tb3 = new ToolbarItem("Seconday 1", "coffee.png", action, ToolbarItemOrder.Secondary)
+			{
+				IsEnabled = true,
+				AutomationId = "toolbaritem_secondary3"
+			};
+
+			var tb4 = new ToolbarItem("Secondary 2", "coffee.png", action, ToolbarItemOrder.Secondary)
+			{
+				IsEnabled = true,
+				AutomationId = "toolbaritem_secondary4"
+			};
+
+			page.ToolbarItems.Add(tb1);
+			page.ToolbarItems.Add(tb2);
+			page.ToolbarItems.Add(tb3);
+			page.ToolbarItems.Add(tb4);
 		}
 	}
 }

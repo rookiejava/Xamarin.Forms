@@ -506,8 +506,8 @@ namespace Xamarin.Forms.Platform.WinRT
 			return _page.BottomAppBar as CommandBar;
 #else
 			IToolbarProvider provider = GetToolbarProvider();
-			var titleProvider = provider as ITitleProvider;
-			if (provider == null || (titleProvider != null && !titleProvider.ShowTitle))
+			//var titleProvider = provider as ITitleProvider; 
+			if (provider == null) // || (titleProvider != null && !titleProvider.ShowTitle))
 				return null;
 
 			return await provider.GetCommandBarAsync();
@@ -521,6 +521,13 @@ namespace Xamarin.Forms.Platform.WinRT
 			_page.BottomAppBar = commandBar;
 			return commandBar;
 #else
+
+			// TODO EZH Figure out whether you can just do CommandBar inline (and not with Page.TopBar/BottomBar)
+			// How does IToolbarProvider work, can I use the toolbar on the Master Page, are there examples of
+			// UWP apps not using them and doing inline instead (like https://msdn.microsoft.com/en-us/windows/uwp/controls-and-patterns/app-bars suggests)
+
+			// TODO EZH Also, figure out why this gets called like 5 times for every single page
+
 			var bar = new FormsCommandBar();
 			if (Device.Idiom != TargetIdiom.Phone)
 				bar.Style = (Windows.UI.Xaml.Style)Windows.UI.Xaml.Application.Current.Resources["TitleToolbar"];

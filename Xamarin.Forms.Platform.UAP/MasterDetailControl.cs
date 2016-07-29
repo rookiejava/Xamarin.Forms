@@ -45,6 +45,9 @@ namespace Xamarin.Forms.Platform.UWP
 		public static readonly DependencyProperty MasterToolbarVisibilityProperty = DependencyProperty.Register("MasterToolbarVisibility", typeof(Visibility), typeof(MasterDetailControl),
 			new PropertyMetadata(default(Visibility)));
 
+		public static readonly DependencyProperty ContentTogglePaneButtonVisibilityProperty = DependencyProperty.Register(nameof(ContentTogglePaneButtonVisibility), typeof(Visibility), typeof(MasterDetailControl),
+			new PropertyMetadata(default(Visibility)));
+		
 		CommandBar _commandBar;
 
 		TaskCompletionSource<CommandBar> _commandBarTcs;
@@ -56,11 +59,9 @@ namespace Xamarin.Forms.Platform.UWP
 		{
 			DefaultStyleKey = typeof(MasterDetailControl);
 
-			// TODO EZH This thing actually contains the command bar right now; we'll need to fix that
 			DetailTitleVisibility = Visibility.Collapsed;
 
 			CollapseStyle = CollapseStyle.None;
-			
 		}
 
 		public FrameworkElement Detail
@@ -164,6 +165,12 @@ namespace Xamarin.Forms.Platform.UWP
 			set { SetValue(CollapseStyleProperty, value); }
 		}
 
+		public Visibility ContentTogglePaneButtonVisibility
+		{
+			get { return (Visibility)GetValue(ContentTogglePaneButtonVisibilityProperty); }
+			set { SetValue(ContentTogglePaneButtonVisibilityProperty, value); }
+		}
+
 		public double CollapsedPaneWidth
 		{
 			get { return (double)GetValue(CollapsedPaneWidthProperty); }
@@ -217,7 +224,7 @@ namespace Xamarin.Forms.Platform.UWP
 
 			_commandBar = GetTemplateChild("CommandBar") as CommandBar;
 
-			UpdateMode();
+			UpdateMode(); // TODO EZH Almost certain that this should not be called here
 
 			if (_commandBarTcs != null)
 				_commandBarTcs.SetResult(_commandBar);
@@ -259,9 +266,15 @@ namespace Xamarin.Forms.Platform.UWP
 			if (_split.DisplayMode == SplitViewDisplayMode.Inline)
 			{
 				// If we've determined that the pane will always be open, then there's no
-				// reason to display the show/hide pane button
+				// reason to display the show/hide pane button in the master
 				MasterToolbarVisibility = Visibility.Collapsed;
 			}
+
+			// If we're in compact mode or the pane is always open,
+			// we don't need to display the content pane's toggle button
+			ContentTogglePaneButtonVisibility = _split.DisplayMode == SplitViewDisplayMode.Overlay 
+				? Visibility.Visible 
+				: Visibility.Collapsed;
 		}
 	}
 }

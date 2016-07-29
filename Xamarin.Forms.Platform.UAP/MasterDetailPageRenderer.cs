@@ -58,7 +58,7 @@ namespace Xamarin.Forms.Platform.UWP
 			set { Control.ToolbarForeground = value; }
 		}
 		
-IPageController PageController => Element as IPageController;
+		IPageController PageController => Element as IPageController;
 
 		IMasterDetailPageController MasterDetailPageController => Element as IMasterDetailPageController;
 
