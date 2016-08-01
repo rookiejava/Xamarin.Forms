@@ -26,6 +26,7 @@ namespace Xamarin.Forms.Platform.UWP
 			UpdateMore();
 		}
 
+		// TODO EZH Is this really how overflow works? We should look into this (https://msdn.microsoft.com/en-us/windows/uwp/controls-and-patterns/app-bars)
 		void UpdateMore()
 		{
 			if (_moreButton == null)

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using Xamarin.Forms.PlatformConfiguration;
@@ -47,15 +47,15 @@ namespace Xamarin.Forms.Controls
 
 		public class NavItem
 		{
-			public NavItem(string text, string imageSource, ICommand command)
+			public NavItem(string text, string icon, ICommand command)
 			{
 				Text = text;
-				ImageSource = imageSource;
+				Icon = icon;
 				Command = command;
 			}
 
 			public string Text { get; set; }
-			public string ImageSource { get; set; }
+			public string Icon { get; set; }
 			public ICommand Command { get; set; }
 		}
 
@@ -63,17 +63,47 @@ namespace Xamarin.Forms.Controls
 		{
 			public NavList(IEnumerable<NavItem> items)
 			{
-				var cell = new DataTemplate(typeof(ImageCell));
-
-				cell.SetBinding(TextCell.TextProperty, "Text");
-				cell.SetBinding(ImageCell.ImageSourceProperty, "ImageSource");
-				cell.SetBinding(TextCell.CommandProperty, "Command");
-
-				ItemTemplate = cell;
 				ItemsSource = items;
+				ItemTapped += (sender, args) => (args.Item as NavItem)?.Command.Execute(null);
 
-				RowHeight = 80;
-				WidthRequest = 48;
+				ItemTemplate = new DataTemplate(() =>
+				{
+					var grid = new Grid();
+					grid.ColumnDefinitions.Add(new ColumnDefinition { Width = 48 });
+					grid.ColumnDefinitions.Add(new ColumnDefinition { Width = 200 });
+
+					grid.Margin = new Thickness(0, 10, 0, 10);
+
+					var text = new Label
+					{
+						VerticalOptions = LayoutOptions.Fill
+					};
+					text.SetBinding(Label.TextProperty, "Text");
+					
+					var glyph = new Label
+					{
+						FontFamily = "Segoe MDL2 Assets",
+						FontSize = 24,
+						HorizontalTextAlignment = TextAlignment.Center,
+					};
+
+					glyph.SetBinding(Label.TextProperty, "Icon");
+					
+					grid.Children.Add(glyph);
+					grid.Children.Add(text);
+
+					Grid.SetColumn(glyph, 0);
+					Grid.SetColumn(text, 1);
+
+					grid.WidthRequest = 48;
+
+					var cell = new ViewCell
+					{
+						View = grid
+					};
+
+					return cell;
+				});
 			}
 		}
 
@@ -98,8 +128,9 @@ namespace Xamarin.Forms.Controls
 
 			var layout = new StackLayout
 			{
+				HorizontalOptions = LayoutOptions.Center,
 				Orientation = StackOrientation.Horizontal,
-				Children = { new Label { Text = "Select Collapse Style" }, collapseStylePicker }
+				Children = { new Label { Text = "Select Collapse Style", VerticalOptions = LayoutOptions.Center }, collapseStylePicker }
 			};
 
 			return layout;
@@ -121,6 +152,7 @@ namespace Xamarin.Forms.Controls
 			
 			var adjustCollapsedWidthSection = new StackLayout()
 			{
+				HorizontalOptions = LayoutOptions.Center,
 				Orientation = StackOrientation.Horizontal,
 				Children = { adjustCollapseWidthLabel, adjustCollapseWidthEntry, adjustCollapseWidthButton}
 			};
@@ -142,8 +174,10 @@ namespace Xamarin.Forms.Controls
 			// Build the navigation pane items
 			var navItems = new List<NavItem>
 			{
-				new NavItem("Return To Gallery", "coffee.png", new Command(RestoreOriginal)),
-				new NavItem("Display Alert", "coffee.png", new Command(() => DisplayAlert("Hey!", "This is an alert", "OK")))
+				new NavItem("Display Alert", "\uE171", new Command(() => DisplayAlert("Alert", "This is an alert", "OK"))),
+				new NavItem("Return To Gallery", "\uE106", new Command(RestoreOriginal)),
+				new NavItem("Save", "\uE105", new Command(() => DisplayAlert("Save", "Fake save dialog", "OK"))),
+				new NavItem("Audio", "\uE189", new Command(() => DisplayAlert("Audio", "Never gonna give you up...", "OK")))
 			};
 
 			var navList = new NavList(navItems);
@@ -176,7 +210,7 @@ namespace Xamarin.Forms.Controls
 			return page;
 		}
 
-		void AddToolBarItems(MasterDetailPage page)
+		void AddToolBarItems(Page page)
 		{
 			Action action = () => DisplayAlert("Hey!", "Command Bar Item Clicked", "OK");
 

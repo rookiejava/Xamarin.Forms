@@ -33,10 +33,17 @@
 									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
 
-								<!-- TODO EZH I think we can make this work by setting Grid.Row depending on whether they asked for top or bottom  -->
-								<!-- TODO EZH Should probably rename PaneTogglePane and ContentTogglePane for clarity  -->
-								<!-- TODO EZH Investigate whether the pane and pane button can go on the right -->
+								<!-- TODO EZH Investigate Pane does have a setting for being on the right, maybe a PS for that is in order -->
+								<!-- TODO EZH Add PS For ToolBarAlignment (Left or Right, Right is default) -->
+								
+								<!-- TODO EZH See what happens with all this on Win8.1 -->
+								<!-- TODO EZH See what happens with all this on Win Phone 8.1 -->
 
+								<!-- TODO EZH Add PS for Windows that's ToolBarPlacement (Default, Top, Bottom) -->
+								
+								<!-- TODO EZH Verify that the correct things happen if you navigate to the MDP (back button) -->
+								<!-- TODO EZH Verify that the correct things happen if you put a nav page in the detail of an MDP (title and such) -->
+								
 								<StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
 									
 									<Button Name="ContentTogglePane" Style="{ThemeResource PaneButton}" Foreground="{TemplateBinding ToolbarForeground}"  

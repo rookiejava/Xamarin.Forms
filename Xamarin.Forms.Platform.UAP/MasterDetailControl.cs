@@ -23,7 +23,7 @@ namespace Xamarin.Forms.Platform.UWP
 			new PropertyMetadata(default(bool), OnShouldShowSplitModeChanged));
 
 		public static readonly DependencyProperty CollapseStyleProperty = DependencyProperty.Register(nameof(CollapseStyle), typeof(CollapseStyle), 
-			typeof(MasterDetailControl), new PropertyMetadata(CollapseStyle.None, CollapseStyleChanged));
+			typeof(MasterDetailControl), new PropertyMetadata(CollapseStyle.Full, CollapseStyleChanged));
 		
 		public static readonly DependencyProperty CollapsedPaneWidthProperty = DependencyProperty.Register(nameof(CollapsedPaneWidth), typeof(double), typeof(MasterDetailControl),
 			new PropertyMetadata(48d, CollapsedPaneWidthChanged));
@@ -61,7 +61,7 @@ namespace Xamarin.Forms.Platform.UWP
 
 			DetailTitleVisibility = Visibility.Collapsed;
 
-			CollapseStyle = CollapseStyle.None;
+			CollapseStyle = CollapseStyle.Full;
 		}
 
 		public FrameworkElement Detail
@@ -224,6 +224,11 @@ namespace Xamarin.Forms.Platform.UWP
 
 			_commandBar = GetTemplateChild("CommandBar") as CommandBar;
 
+			if (Device.Idiom == TargetIdiom.Phone)
+			{
+				Windows.UI.Xaml.Controls.Grid.SetRow(_commandBar, 2);
+			}
+
 			UpdateMode(); // TODO EZH Almost certain that this should not be called here
 
 			if (_commandBarTcs != null)
@@ -259,7 +264,7 @@ namespace Xamarin.Forms.Platform.UWP
 
 			_split.DisplayMode = ShouldShowSplitMode 
 				? SplitViewDisplayMode.Inline 
-				: CollapseStyle == CollapseStyle.None ? SplitViewDisplayMode.Overlay : SplitViewDisplayMode.CompactOverlay;
+				: CollapseStyle == CollapseStyle.Full ? SplitViewDisplayMode.Overlay : SplitViewDisplayMode.CompactOverlay;
 
 			_split.CompactPaneLength = CollapsedPaneWidth;
 
