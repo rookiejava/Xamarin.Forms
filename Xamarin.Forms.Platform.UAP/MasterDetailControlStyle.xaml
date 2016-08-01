@@ -39,8 +39,6 @@
 								<!-- TODO EZH See what happens with all this on Win8.1 -->
 								<!-- TODO EZH See what happens with all this on Win Phone 8.1 -->
 
-								<!-- TODO EZH Add PS for Windows that's ToolBarPlacement (Default, Top, Bottom) -->
-								
 								<!-- TODO EZH Verify that the correct things happen if you navigate to the MDP (back button) -->
 								<!-- TODO EZH Verify that the correct things happen if you put a nav page in the detail of an MDP (title and such) -->
 								

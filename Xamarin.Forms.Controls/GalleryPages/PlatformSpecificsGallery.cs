@@ -124,12 +124,21 @@ namespace Xamarin.Forms.Controls
 				selectedIndexChanged(picker);
 			};
 
-			var layout = new StackLayout
+			var changerLabel = new Label { Text = label, VerticalOptions = LayoutOptions.Center };
+
+			var layout = new Grid
 			{
 				HorizontalOptions = LayoutOptions.Center,
-				Orientation = StackOrientation.Horizontal,
-				Children = { new Label { Text = label, VerticalOptions = LayoutOptions.Center }, picker }
+				ColumnDefinitions = new ColumnDefinitionCollection()
+				{
+					new ColumnDefinition { Width = 150 },
+					new ColumnDefinition { Width = 100 }
+				},
+				Children = { changerLabel, picker }
 			};
+
+			Grid.SetColumn(changerLabel, 0);
+			Grid.SetColumn(picker, 1);
 
 			return layout;
 		}
@@ -160,7 +169,7 @@ namespace Xamarin.Forms.Controls
 		{
 			var adjustCollapseWidthLabel = new Label { Text = "Adjust Collapsed Width", VerticalTextAlignment = TextAlignment.Center, VerticalOptions = LayoutOptions.Center};
 			var adjustCollapseWidthEntry = new Entry { Text = page.On<Windows>().CollapsedPaneWidth().ToString() }; 
-			var adjustCollapseWidthButton = new Button { Text = "Change" };
+			var adjustCollapseWidthButton = new Button { Text = "Change", BackgroundColor = Color.Gray };
 			adjustCollapseWidthButton.Clicked += (sender, args) =>
 			{
 				double newWidth;
@@ -180,7 +189,7 @@ namespace Xamarin.Forms.Controls
 			return adjustCollapsedWidthSection;
 		}
 
-		static Layout CreateAddRemoveToolBarItemButtons(MasterDetailPage page)
+		static Layout CreateAddRemoveToolBarItemButtons(Page page)
 		{
 			var layout = new StackLayout { Orientation = StackOrientation.Vertical, HorizontalOptions = LayoutOptions.Center };
 			layout.Children.Add(new Label {Text = "Toolbar Items:"});
@@ -189,9 +198,9 @@ namespace Xamarin.Forms.Controls
 
 			layout.Children.Add(buttonLayout);
 
-			var addPrimary = new Button { Text = "Add Primary" };
-			var addSecondary = new Button { Text = "Add Secondary" };
-			var remove = new Button { Text = "Remove" };
+			var addPrimary = new Button { Text = "Add Primary", BackgroundColor = Color.Gray };
+			var addSecondary = new Button { Text = "Add Secondary", BackgroundColor = Color.Gray };
+			var remove = new Button { Text = "Remove", BackgroundColor = Color.Gray };
 
 			buttonLayout.Children.Add(addPrimary);
 			buttonLayout.Children.Add(addSecondary);
@@ -252,8 +261,8 @@ namespace Xamarin.Forms.Controls
 			var detailContent = new StackLayout { VerticalOptions = LayoutOptions.Fill, HorizontalOptions = LayoutOptions.Fill };
 			detailContent.Children.Add(new Label
 			{ 
-				HeightRequest = 200,
-				Text = "Features",
+				Text = "Platform Features",
+				FontAttributes = FontAttributes.Bold,
 				HorizontalTextAlignment = TextAlignment.Center,
 				VerticalTextAlignment = TextAlignment.Center
 			});
