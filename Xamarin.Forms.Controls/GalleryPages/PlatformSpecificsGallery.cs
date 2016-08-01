@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.WindowsSpecific;
@@ -107,38 +108,57 @@ namespace Xamarin.Forms.Controls
 			}
 		}
 
-		static Layout CreateCollapseStyleChanger(MasterDetailPage page)
+		static Layout CreateChanger(Type enumType, string defaultOption, Action<Picker> selectedIndexChanged, string label)
 		{
-			var collapseStylePicker = new Picker();
-			string[] collapseStyles = Enum.GetNames(typeof(CollapseStyle));
-			foreach (string collapseStyle in collapseStyles)
+			var picker = new Picker();
+			string[] options = Enum.GetNames(enumType);
+			foreach (string option in options)
 			{
-				collapseStylePicker.Items.Add(collapseStyle);
+				picker.Items.Add(option);
 			}
 
-			collapseStylePicker.SelectedIndex =
-				collapseStyles.IndexOf(Enum.GetName(typeof(CollapseStyle), page.On<Windows>().GetCollapseStyle()));
+			picker.SelectedIndex = options.IndexOf(defaultOption);
 
-			collapseStylePicker.SelectedIndexChanged += (sender, args) =>
+			picker.SelectedIndexChanged += (sender, args) =>
 			{
-				page.On<Windows>()
-					.SetCollapseStyle(
-						(CollapseStyle)Enum.Parse(typeof(CollapseStyle), collapseStylePicker.Items[collapseStylePicker.SelectedIndex]));
+				selectedIndexChanged(picker);
 			};
 
 			var layout = new StackLayout
 			{
 				HorizontalOptions = LayoutOptions.Center,
 				Orientation = StackOrientation.Horizontal,
-				Children = { new Label { Text = "Select Collapse Style", VerticalOptions = LayoutOptions.Center }, collapseStylePicker }
+				Children = { new Label { Text = label, VerticalOptions = LayoutOptions.Center }, picker }
 			};
 
 			return layout;
 		}
 
+		static Layout CreateCollapseStyleChanger(MasterDetailPage page)
+		{
+			var enumType = typeof(CollapseStyle);
+
+			return CreateChanger(enumType,
+				Enum.GetName(enumType, page.On<Windows>().GetCollapseStyle()),
+				picker => {
+					page.On<Windows>().SetCollapseStyle((CollapseStyle)Enum.Parse(enumType, picker.Items[picker.SelectedIndex]));
+				}, "Select Collapse Style");
+		}
+
+		static Layout CreateToolbarPlacementChanger(MasterDetailPage page)
+		{
+			var enumType = typeof(ToolbarPlacement);
+
+			return CreateChanger(enumType,
+				Enum.GetName(enumType, page.On<Windows>().GetToolbarPlacement()),
+				picker => {
+					page.On<Windows>().SetToolbarPlacement((ToolbarPlacement)Enum.Parse(enumType, picker.Items[picker.SelectedIndex]));
+				}, "Select Toolbar Placement");
+		}
+
 		static Layout CreateCollapseWidthAdjuster(MasterDetailPage page)
 		{
-			var adjustCollapseWidthLabel = new Label() { Text = "Adjust Collapsed Width", VerticalTextAlignment = TextAlignment.Center, VerticalOptions = LayoutOptions.Center};
+			var adjustCollapseWidthLabel = new Label { Text = "Adjust Collapsed Width", VerticalTextAlignment = TextAlignment.Center, VerticalOptions = LayoutOptions.Center};
 			var adjustCollapseWidthEntry = new Entry { Text = page.On<Windows>().CollapsedPaneWidth().ToString() }; 
 			var adjustCollapseWidthButton = new Button { Text = "Change" };
 			adjustCollapseWidthButton.Clicked += (sender, args) =>
@@ -158,6 +178,48 @@ namespace Xamarin.Forms.Controls
 			};
 
 			return adjustCollapsedWidthSection;
+		}
+
+		static Layout CreateAddRemoveToolBarItemButtons(MasterDetailPage page)
+		{
+			var layout = new StackLayout { Orientation = StackOrientation.Vertical, HorizontalOptions = LayoutOptions.Center };
+			layout.Children.Add(new Label {Text = "Toolbar Items:"});
+
+			var buttonLayout = new StackLayout { Orientation = StackOrientation.Horizontal, HorizontalOptions = LayoutOptions.Center };
+
+			layout.Children.Add(buttonLayout);
+
+			var addPrimary = new Button { Text = "Add Primary" };
+			var addSecondary = new Button { Text = "Add Secondary" };
+			var remove = new Button { Text = "Remove" };
+
+			buttonLayout.Children.Add(addPrimary);
+			buttonLayout.Children.Add(addSecondary);
+			buttonLayout.Children.Add(remove);
+
+			Action action = () => page.DisplayAlert(CommandBarActionTitle, CommandBarActionMessage, CommandBarActionDismiss);
+
+			addPrimary.Clicked += (sender, args) =>
+			{
+				var index = page.ToolbarItems.Count(item => item.Order == ToolbarItemOrder.Primary) + 1;
+				page.ToolbarItems.Add(new ToolbarItem($"Primary {index}", "coffee.png", action, ToolbarItemOrder.Primary));
+			};
+
+			addSecondary.Clicked += (sender, args) =>
+			{
+				var index = page.ToolbarItems.Count(item => item.Order == ToolbarItemOrder.Secondary) + 1;
+				page.ToolbarItems.Add(new ToolbarItem($"Secondary {index}", "coffee.png", action, ToolbarItemOrder.Secondary));
+			};
+
+			remove.Clicked += (sender, args) =>
+			{
+				if (page.ToolbarItems.Any())
+				{
+					page.ToolbarItems.RemoveAt(0);
+				}
+			};
+
+			return layout;
 		}
 
 		MasterDetailPage CreateMdpPage()
@@ -197,7 +259,9 @@ namespace Xamarin.Forms.Controls
 			});
 
 			detailContent.Children.Add(CreateCollapseStyleChanger(page));
+			detailContent.Children.Add(CreateToolbarPlacementChanger(page));
 			detailContent.Children.Add(CreateCollapseWidthAdjuster(page));
+			detailContent.Children.Add(CreateAddRemoveToolBarItemButtons(page));
 
 			detail.Content = detailContent;
 
@@ -210,9 +274,13 @@ namespace Xamarin.Forms.Controls
 			return page;
 		}
 
+		const string CommandBarActionTitle = "Hey!";
+		const string CommandBarActionMessage = "Command Bar Item Clicked";
+		const string CommandBarActionDismiss = "OK";
+
 		void AddToolBarItems(Page page)
 		{
-			Action action = () => DisplayAlert("Hey!", "Command Bar Item Clicked", "OK");
+			Action action = () => page.DisplayAlert(CommandBarActionTitle, CommandBarActionMessage, CommandBarActionDismiss);
 
 			var tb1 = new ToolbarItem("Primary 1", "coffee.png", action, ToolbarItemOrder.Primary)
 			{

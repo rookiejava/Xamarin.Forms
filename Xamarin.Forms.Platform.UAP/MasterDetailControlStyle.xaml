@@ -33,7 +33,7 @@
 									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
 
-								<!-- TODO EZH Investigate Pane does have a setting for being on the right, maybe a PS for that is in order -->
+								<!-- TODO EZH Pane does have a setting for being on the right, maybe a PS for that is in order -->
 								<!-- TODO EZH Add PS For ToolBarAlignment (Left or Right, Right is default) -->
 								
 								<!-- TODO EZH See what happens with all this on Win8.1 -->

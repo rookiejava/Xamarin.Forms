@@ -146,6 +146,7 @@ namespace Xamarin.Forms.Platform.UWP
 				UpdateDetail();
 				UpdateMaster();
 				UpdateMode();
+				UpdateToolbarPlacement();
 				UpdateIsPresented();
 
 				if (!string.IsNullOrEmpty(e.NewElement.AutomationId))
@@ -165,6 +166,8 @@ namespace Xamarin.Forms.Platform.UWP
 			         || e.PropertyName == Specifics.CollapseStyleProperty.PropertyName
 			         || e.PropertyName == Specifics.CollapsedPaneWidthProperty.PropertyName)
 				UpdateMode();
+			else if(e.PropertyName == Specifics.ToolbarPlacementProperty.PropertyName)
+				UpdateToolbarPlacement();
 		}
 
 		void ClearDetail()
@@ -298,6 +301,11 @@ namespace Xamarin.Forms.Platform.UWP
 			Control.CollapseStyle = Element.OnThisPlatform().GetCollapseStyle();
 			Control.CollapsedPaneWidth = Element.OnThisPlatform().CollapsedPaneWidth();
 			Control.ShouldShowSplitMode = MasterDetailPageController.ShouldShowSplitMode;
+		}
+
+		void UpdateToolbarPlacement()
+		{
+			Control.ToolbarPlacement = Element.OnThisPlatform().GetToolbarPlacement();
 		}
 
 #if WINDOWS_UWP

@@ -24,6 +24,10 @@ namespace Xamarin.Forms.Platform.UWP
 
 		public static readonly DependencyProperty CollapseStyleProperty = DependencyProperty.Register(nameof(CollapseStyle), typeof(CollapseStyle), 
 			typeof(MasterDetailControl), new PropertyMetadata(CollapseStyle.Full, CollapseStyleChanged));
+
+		// TODO EZH Can we pull this out so that we can use it on multiple controls? Rather than repeat it for everything that supports it
+		public static readonly DependencyProperty ToolbarPlacementProperty = DependencyProperty.Register(nameof(ToolbarPlacement), typeof(ToolbarPlacement), 
+			typeof(MasterDetailControl), new PropertyMetadata(ToolbarPlacement.Default, ToolbarPlacementChanged));
 		
 		public static readonly DependencyProperty CollapsedPaneWidthProperty = DependencyProperty.Register(nameof(CollapsedPaneWidth), typeof(double), typeof(MasterDetailControl),
 			new PropertyMetadata(48d, CollapsedPaneWidthChanged));
@@ -165,6 +169,12 @@ namespace Xamarin.Forms.Platform.UWP
 			set { SetValue(CollapseStyleProperty, value); }
 		}
 
+		public ToolbarPlacement ToolbarPlacement
+		{
+			get { return (ToolbarPlacement)GetValue(ToolbarPlacementProperty); }
+			set { SetValue(ToolbarPlacementProperty, value); }
+		}
+
 		public Visibility ContentTogglePaneButtonVisibility
 		{
 			get { return (Visibility)GetValue(ContentTogglePaneButtonVisibilityProperty); }
@@ -224,12 +234,8 @@ namespace Xamarin.Forms.Platform.UWP
 
 			_commandBar = GetTemplateChild("CommandBar") as CommandBar;
 
-			if (Device.Idiom == TargetIdiom.Phone)
-			{
-				Windows.UI.Xaml.Controls.Grid.SetRow(_commandBar, 2);
-			}
-
-			UpdateMode(); // TODO EZH Almost certain that this should not be called here
+			UpdateToolbarPlacement();
+			UpdateMode(); 
 
 			if (_commandBarTcs != null)
 				_commandBarTcs.SetResult(_commandBar);
@@ -243,6 +249,11 @@ namespace Xamarin.Forms.Platform.UWP
 		static void CollapseStyleChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
 		{
 			((MasterDetailControl)dependencyObject).UpdateMode();
+		}
+
+		static void ToolbarPlacementChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
+		{
+			((MasterDetailControl)dependencyObject).UpdateToolbarPlacement();
 		}
 
 		static void CollapsedPaneWidthChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
@@ -280,6 +291,28 @@ namespace Xamarin.Forms.Platform.UWP
 			ContentTogglePaneButtonVisibility = _split.DisplayMode == SplitViewDisplayMode.Overlay 
 				? Visibility.Visible 
 				: Visibility.Collapsed;
+		}
+
+		void UpdateToolbarPlacement()
+		{
+			if (_commandBar == null)
+			{
+				return;
+			}
+
+			switch (ToolbarPlacement)
+			{
+				case ToolbarPlacement.Top:
+					Windows.UI.Xaml.Controls.Grid.SetRow(_commandBar, 0);
+					break;
+				case ToolbarPlacement.Bottom:
+					Windows.UI.Xaml.Controls.Grid.SetRow(_commandBar, 2);
+					break;
+				case ToolbarPlacement.Default:
+				default:
+					Windows.UI.Xaml.Controls.Grid.SetRow(_commandBar, Device.Idiom == TargetIdiom.Phone ? 2 : 0);
+					break;
+			}
 		}
 	}
 }
