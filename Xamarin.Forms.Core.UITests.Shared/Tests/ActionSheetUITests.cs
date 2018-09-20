@@ -163,7 +163,7 @@ namespace Xamarin.Forms.Core.UITests
 		{
 			var queryString = $"* text:'{actionSheet}'";
 			Func<AppQuery, AppQuery> actionSheetQuery = q => q.Raw (queryString);
-#if __WINDOWS__
+#if __WINDOWS__ || __TIZEN__
 			App.ScrollDownTo(actionSheetQuery);
 #elif __MACOS__
 			App.Tap(actionSheetQuery);

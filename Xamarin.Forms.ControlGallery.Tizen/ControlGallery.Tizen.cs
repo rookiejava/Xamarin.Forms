@@ -3,6 +3,7 @@ using Xamarin.Forms.Controls;
 using ElmSharp;
 using Tizen.Applications;
 using Tizen.NET.MaterialComponents;
+using Tizen.Appium;
 
 namespace Xamarin.Forms.ControlGallery.Tizen
 {
@@ -23,6 +24,7 @@ namespace Xamarin.Forms.ControlGallery.Tizen
 			FormsMaps.Init("HERE", "write-your-API-key-here");
 			global::Xamarin.Forms.Platform.Tizen.Forms.Init(app);
 			FormsMaterial.Init();
+			TizenAppium.StartService(app);
 			app.Run(args);
 		}
 	}
