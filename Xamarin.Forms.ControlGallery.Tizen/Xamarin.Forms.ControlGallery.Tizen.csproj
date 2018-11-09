@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\samsung\Tizen.Appium\Tizen.Appium.csproj" />
+    <ProjectReference Include="..\..\Tizen.Appium\Tizen.Appium.csproj" />
     <ProjectReference Include="..\Xamarin.Forms.Core\Xamarin.Forms.Core.csproj" />
     <ProjectReference Include="..\Xamarin.Forms.Material.Tizen\Xamarin.Forms.Material.Tizen.csproj" />
     <ProjectReference Include="..\Xamarin.Forms.Platform\Xamarin.Forms.Platform.csproj" />
