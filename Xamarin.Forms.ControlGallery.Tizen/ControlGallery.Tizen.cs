@@ -21,7 +21,7 @@ namespace Xamarin.Forms.ControlGallery.Tizen
 		static void Main(string[] args)
 		{
 			var app = new MainApplication();
-			FormsMaps.Init("HERE", "write-your-API-key-here");
+			//FormsMaps.Init("HERE", "write-your-API-key-here");
 			global::Xamarin.Forms.Platform.Tizen.Forms.Init(app);
 			FormsMaterial.Init();
 			TizenAppium.StartService(app);
