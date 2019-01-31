@@ -501,6 +501,7 @@ namespace Xamarin.Forms.Core.UITests
 			touch.Wait(2000);
 			touch.Release();
 			touch.Perform();
+			Thread.Sleep(2000);
 		}
 
 		public void WaitFor(Func<bool> predicate, string timeoutMessage = "Timed out waiting...", TimeSpan? timeout = null,
@@ -574,7 +575,7 @@ namespace Xamarin.Forms.Core.UITests
 				return;
 			}
 			touch.Perform();
-			Thread.Sleep(1000);
+			Thread.Sleep(2000);
 		}
 
 		TizenElement FindFirstElement(TizenQuery query)
@@ -677,7 +678,7 @@ namespace Xamarin.Forms.Core.UITests
 			}
 
 			element.Click();
-			Thread.Sleep(1000);
+			Thread.Sleep(2000);
 		}
 
 		void LongTap(TizenQuery query, int waitTime = 2000)
@@ -694,6 +695,7 @@ namespace Xamarin.Forms.Core.UITests
 			touch.Wait(waitTime);
 			touch.Release();
 			touch.Perform();
+			Thread.Sleep(2000);
 		}
 
 		static AppRect ToAppRect(TizenElement TizenElement)
