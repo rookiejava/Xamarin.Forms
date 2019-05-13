@@ -17,7 +17,7 @@ namespace Xamarin.Forms.Core.UITests
 
 		public static AppRect ScreenBounds { get; set; }
 
-		[OneTimeTearDown]
+		[TestFixtureTearDown]
 		protected virtual void FixtureTeardown()
 		{
 		}
@@ -56,7 +56,7 @@ namespace Xamarin.Forms.Core.UITests
 		protected abstract void NavigateToGallery();
 
 #pragma warning disable 618
-		[OneTimeSetUp]
+		[TestFixtureSetUp]
 #pragma warning restore 618
 		protected virtual void FixtureSetup()
 		{
@@ -124,7 +124,7 @@ namespace Xamarin.Forms.Core.UITests
 	[SetUpFixture]
 	public class CoreUITestsSetup
 	{
-		[OneTimeSetUp]
+		[SetUp]
 		public void RunBeforeAnyTests()
 		{
 			LaunchApp();

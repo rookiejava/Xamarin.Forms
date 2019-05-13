@@ -9,7 +9,7 @@ namespace Xamarin.Forms.Core.UITests
 {
 	public class TizenTestBase
 	{
-		protected const string TizenApplicationDriverUrl = "http://192.168.0.49:4723/wd/hub";
+		protected const string TizenApplicationDriverUrl = "http://127.0.0.1:4723/wd/hub";
 		protected static TizenDriver<TizenElement> Session;
 
 		public static IApp ConfigureApp()

@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Tizen.Appium" Version="1.0.0-preview2" />
     <PackageReference Include="Tizen.NET" Version="4.0.0">
       <ExcludeAssets>Runtime</ExcludeAssets>
     </PackageReference>
@@ -14,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Tizen.Appium\Tizen.Appium.csproj" />
     <ProjectReference Include="..\Xamarin.Forms.Core\Xamarin.Forms.Core.csproj" />
     <ProjectReference Include="..\Xamarin.Forms.Material.Tizen\Xamarin.Forms.Material.Tizen.csproj" />
     <ProjectReference Include="..\Xamarin.Forms.Platform\Xamarin.Forms.Platform.csproj" />

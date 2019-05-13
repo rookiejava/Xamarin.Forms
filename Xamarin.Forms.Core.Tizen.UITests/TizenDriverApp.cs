@@ -85,7 +85,7 @@ namespace Xamarin.Forms.Core.UITests
 
 		public void DismissKeyboard()
 		{
-			throw new NotImplementedException();
+			// No-op for Desktop, which is all we're doing right now
 		}
 
 		public void DoubleTap(Func<AppQuery, AppQuery> query)
@@ -497,7 +497,7 @@ namespace Xamarin.Forms.Core.UITests
 		public void TouchAndHoldCoordinates(float x, float y)
 		{
 			TouchAction touch = new TouchAction(_session);
-			touch.Press(x,y);
+			touch.Press(x, y);
 			touch.Wait(2000);
 			touch.Release();
 			touch.Perform();
@@ -566,7 +566,7 @@ namespace Xamarin.Forms.Core.UITests
 				}
 				touch.Tap(element, null, null, 2);
 			}
-			else if(x != 0 && y != 0)
+			else if (x != 0 && y != 0)
 			{
 				touch.Tap(x, y, 2);
 			}
@@ -591,7 +591,7 @@ namespace Xamarin.Forms.Core.UITests
 
 		ReadOnlyCollection<TizenElement> QueryTizen(TizenQuery query)
 		{
-			ReadOnlyCollection<TizenElement> resultByAccessibilityId = _session.FindElementsByAccessibilityId(query.Marked);
+			var resultByAccessibilityId = _session.FindElementsByAccessibilityId(query.Marked);
 
 			IEnumerable<TizenElement> result;
 
