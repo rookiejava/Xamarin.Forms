@@ -14,7 +14,7 @@
     <None Remove="Resource\wc_visual_cue.png" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Xamarin.Forms.Core\Crc64.cs" Link="Crc64.cs" />
+    <Compile Include="..\..\..\Forms\src\Xamarin.Forms.Core\Crc64.cs" Link="Crc64.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resource\arrow_left.png" />
@@ -26,11 +26,11 @@
 
   <ItemGroup>
     <PackageReference Include="SkiaSharp.Views" Version="2.80.2" />
-    <PackageReference Include="Tizen.NET" Version="4.0.0" />
+    <PackageReference Include="Tizen.NET" Version="5.0.0.14562" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Xamarin.Forms.Core\Xamarin.Forms.Core.csproj" />
+    <ProjectReference Include="..\..\..\Forms\src\Xamarin.Forms.Core\Xamarin.Forms.Core.csproj" />
   </ItemGroup>
 
 </Project>

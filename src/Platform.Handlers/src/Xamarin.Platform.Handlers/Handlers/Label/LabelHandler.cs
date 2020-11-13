@@ -5,6 +5,8 @@ using NativeView = UIKit.UILabel;
 using NativeView = AppKit.NSTextField;
 #elif MONOANDROID
 using NativeView = Android.Widget.TextView;
+#elif __TIZEN__
+using NativeView = Xamarin.Platform.Tizen.Label;
 #elif NETCOREAPP
 using NativeView = System.Windows.Controls.TextBlock;
 #elif NETSTANDARD
@@ -31,6 +33,10 @@ namespace Xamarin.Platform.Handlers
 		}
 #if MONOANDROID
 		protected override NativeView CreateNativeView() => new NativeView(this.Context);
+#elif __TIZEN__
+#pragma warning disable CS8604 // Possible null reference argument.
+		protected override NativeView CreateNativeView() => new NativeView(this.NativeParent);
+#pragma warning restore CS8604 // Possible null reference argument.
 #else
 		protected override NativeView CreateNativeView() => new NativeView();
 #endif

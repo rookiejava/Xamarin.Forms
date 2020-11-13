@@ -1,6 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;Xamarin.iOS10;MonoAndroid10.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;Xamarin.iOS10;MonoAndroid10.0;tizen40</TargetFrameworks>
   </PropertyGroup>  
   <Import Project="..\..\..\..\.nuspec\Xamarin.Forms.MultiTargeting.targets" />
   <ItemGroup Condition="$(TargetFramework.StartsWith('Xamarin.iOS')) == true ">
@@ -8,6 +8,9 @@
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.StartsWith('MonoAndroid')) == true ">
     <ProjectReference Include="..\..\..\Platform.Renderers\src\Xamarin.Forms.Platform.Android\Xamarin.Forms.Platform.Android.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework.StartsWith('tizen')) == true ">
+    <ProjectReference Include="..\..\..\Platform.Renderers\src\Xamarin.Forms.Platform.Tizen\Xamarin.Forms.Platform.Tizen.csproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Forms\src\Xamarin.Forms.Core\Xamarin.Forms.Core.csproj" />
